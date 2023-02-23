@@ -6,6 +6,7 @@ import com.macro.mall.tiny.mbg.model.PmsBrand;
 import com.macro.mall.tiny.service.PmsBrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class PmsBrandController {
 
     @ApiOperation("添加品牌")
     @PostMapping("/create")
-    public CommonResult createBrand(@RequestBody PmsBrand pmsBrand){
+    public CommonResult createBrand(@RequestBody @ApiParam("品牌实体类") PmsBrand pmsBrand){
         int count=0;
         count=pmsBrandService.createBrand(pmsBrand);
         if(count==1){
