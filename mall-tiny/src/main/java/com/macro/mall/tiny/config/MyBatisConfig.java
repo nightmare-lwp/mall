@@ -1,7 +1,6 @@
 package com.macro.mall.tiny.config;
 
 import org.mybatis.spring.annotation.MapperScan;
-import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 /**
