@@ -3,6 +3,7 @@ package com.macro.mall.tiny.service.Impl;
 import com.macro.mall.tiny.mbg.model.UmsAdmin;
 import com.macro.mall.tiny.mbg.model.UmsPermission;
 import com.macro.mall.tiny.service.UmsAdminService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author lwp
  * @date 2023/2/22 21:05
  */
+@Service
 public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
