@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-//import java.util.logging.Logger;
 
 /**
  * 品牌管理Controller
@@ -40,6 +39,7 @@ public class PmsBrandController {
 
     @ApiOperation("添加品牌")
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority('pms:brand:create')")
     public CommonResult createBrand(@RequestBody @ApiParam("品牌实体类") PmsBrand pmsBrand){
         int count=0;
         count=pmsBrandService.createBrand(pmsBrand);
@@ -54,6 +54,7 @@ public class PmsBrandController {
 
     @ApiOperation("更新指定id的品牌")
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('pms:brand:update')")
     public CommonResult updateBrand(@PathVariable("id") Long id,@RequestBody PmsBrand pmsBrand){
         int count=0;
         count=pmsBrandService.updateBrand(id,pmsBrand);
@@ -68,6 +69,7 @@ public class PmsBrandController {
 
     @ApiOperation("删除指定id的品牌")
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('pms:brand:delete')")
     public CommonResult deleteBrand(@PathVariable("id")Long id){
         int count=0;
         count=pmsBrandService.deleteBrand(id);
@@ -82,6 +84,7 @@ public class PmsBrandController {
 
     @ApiOperation("分页查询品牌列表")
     @GetMapping("/list")
+    @PreAuthorize("hasAuthority('pms:brand:read')")
     public CommonResult listBrand(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "3")Integer pageSize)
     {
@@ -91,6 +94,7 @@ public class PmsBrandController {
 
     @ApiOperation("获取指定id的品牌详情")
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAuthority('pms:brand:read')")
     public CommonResult getBrand(@PathVariable("id")Long id){
         return CommonResult.success(pmsBrandService.getBrand(id));
     }

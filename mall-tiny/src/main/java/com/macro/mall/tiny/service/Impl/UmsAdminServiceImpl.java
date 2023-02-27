@@ -3,9 +3,11 @@ package com.macro.mall.tiny.service.Impl;
 import com.macro.mall.tiny.common.utils.JwtTokenUtil;
 import com.macro.mall.tiny.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.tiny.mbg.mapper.UmsAdminMapper;
+import com.macro.mall.tiny.mbg.mapper.UmsPermissionMapper;
 import com.macro.mall.tiny.mbg.model.UmsAdmin;
 import com.macro.mall.tiny.mbg.model.UmsAdminExample;
 import com.macro.mall.tiny.mbg.model.UmsPermission;
+import com.macro.mall.tiny.mbg.model.UmsPermissionExample;
 import com.macro.mall.tiny.service.UmsAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.security.Permission;
+import java.util.*;
 
 /**
  * UmsAdminService实现类
@@ -42,6 +44,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     JwtTokenUtil jwtTokenUtil;
     @Resource
     UmsAdminRoleRelationDao umsAdminRoleRelationDao;
+    @Resource
+    UmsPermissionMapper umsPermissionMapper;
     @Override
     public UmsAdmin getAdminByUsername(String username) {
         UmsAdminExample umsAdminExample=new UmsAdminExample();
@@ -89,6 +93,24 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public List<UmsPermission> getPermissionList(Long adminId) {
-        return umsAdminRoleRelationDao.getPermissionList(adminId);
+        Set<Long> set=new HashSet<>();
+        List<UmsPermission> permissionList=umsAdminRoleRelationDao.getPermissionList(adminId);
+        for(UmsPermission permission:permissionList){
+            set.add(permission.getId());
+        }
+        while(!set.isEmpty()){
+            Object[] a=set.toArray();
+            set.clear();
+            for(Object o:a){
+                UmsPermissionExample permissionExample=new UmsPermissionExample();
+                permissionExample.createCriteria().andPidEqualTo((Long)o);
+                List<UmsPermission> permissions=umsPermissionMapper.selectByExample(permissionExample);
+                for (UmsPermission umsPermission:permissions){
+                    set.add(umsPermission.getId());
+                    permissionList.add(umsPermission);
+                }
+            }
+        }
+        return permissionList;
     }
 }
